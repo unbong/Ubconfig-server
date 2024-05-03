@@ -1,0 +1,29 @@
+### get all
+GET http://localhost:9129/list?app=app1&env=dev&ns=public
+
+### update
+POST http://localhost:9129/update?app=app1&env=dev&ns=public
+Content-Type: application/json
+
+{
+  "ub.a": "dev2222",
+  "ub.b": "http://localhost:2222",
+  "ub.d": 2222
+}
+
+### insert
+POST http://localhost:9129/update?app=app2&env=dev&ns=public
+Content-Type: application/json
+{
+  "ub.a": "dev_2",
+  "ub.b": "http://localhost:2323",
+  "ub.d": 2323
+}
+
+### version
+GET http://localhost:9129/version?app=app1&env=dev&ns=public
+
+### version
+GET http://localhost:9129/version?app=app2&env=dev&ns=public
+
+
