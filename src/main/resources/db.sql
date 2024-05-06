@@ -8,7 +8,7 @@ create table if not exists `configs`(
 );
 
 insert into configs (app, env, ns,pkey, pval)
-values ('app1','dev','public','ub.a', 'dev100');
+values ('app1','dev','public','ub.a', 'dev-server100');
 
 insert into configs (app, env, ns,pkey, pval)
 values ('app1','dev','public','ub.b', 'http://localhost:9192');
