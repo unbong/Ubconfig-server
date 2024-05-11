@@ -6,9 +6,9 @@ POST http://localhost:9129/update?app=app1&env=dev&ns=public
 Content-Type: application/json
 
 {
-  "ub.a": "dev2222",
-  "ub.b": "http://localhost:2222",
-  "ub.d": 2222
+  "ub.a": "dev3434",
+  "ub.b": "http://localhost:3434",
+  "ub.d": 333
 }
 
 ### insert
