@@ -27,3 +27,42 @@ GET http://localhost:9129/version?app=app1&env=dev&ns=public
 GET http://localhost:9129/version?app=app2&env=dev&ns=public
 
 
+
+### add config rpc provider
+POST http://localhost:9129/update?app=app1&env=dev&ns=public
+Content-Type: application/json
+
+{
+
+"ubregistry.servers":"http://localhost:8484",
+"ubrpc.zkServer":"localhost:12181",
+"ubrpc.zkRoot":"Ubrpc",
+"ubrpc.app.id":"app1",
+"ubrpc.app.namespace":"public",
+"ubrpc.app.env":"dev",
+"ubrpc.provider.metas.dc":"bj",
+"ubrpc.provider.metas.gray":"false",
+"ubrpc.provider.metas.unit":"B001",
+"ubrpc.provider.metas.tc":"20"
+}
+
+
+### add config rpc consumer
+POST http://localhost:9129/update?app=app1&env=dev&ns=public
+Content-Type: application/json
+
+{
+
+  "ubregistry.servers":"http://localhost:8484",
+  "ubrpc.app.env":"dev",
+  "ubrpc.app.id":"app1",
+  "ubrpc.app.namespace":"public",
+  "ubrpc.consumer.faultLimit":"10",
+  "ubrpc.consumer.grayRatio":"10",
+  "ubrpc.consumer.halfOpenDelay":"60000",
+  "ubrpc.consumer.halfOpenInitialDelay":"10000",
+  "ubrpc.consumer.retries":"1",
+  "ubrpc.consumer.timeout":"1000",
+  "ubrpc.zkRoot":"Ubrpc",
+  "ubrpc.zkServer":"localhost:12181"
+}

@@ -2,6 +2,7 @@ package io.unbong.ubconfig.server;
 
 import io.unbong.ubconfig.server.dal.ConfigsMapper;
 import io.unbong.ubconfig.server.model.Configs;
+import io.unbong.ubconfig.server.model.DistributedLocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,8 @@ public class UbConfigController {
     ConfigsMapper mapper;
     Map<String, Long> versions = new HashMap<>();
 
-
+    @Autowired
+    DistributedLocks locks;
 
     @GetMapping("/list")
     public List<Configs> list(String app, String env, String ns){
@@ -63,5 +65,10 @@ public class UbConfigController {
     @GetMapping("/version")
     public long version(String app, String env, String ns){
         return versions.getOrDefault(app+"-"+env+"-"+ns,-1l);
+    }
+
+    @GetMapping("/status")
+    public boolean status(){
+        return locks.getLocked().get();
     }
 }
