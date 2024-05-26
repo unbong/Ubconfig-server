@@ -51,7 +51,7 @@ public class UBRegistryCenter  implements RegistryCenter{
         registerWorker = Executors.newScheduledThreadPool(1);
         registerWorker.scheduleWithFixedDelay(()->{
             this.renew();
-        }, 5000, 5000, TimeUnit.MILLISECONDS);
+        }, 2000, 5000, TimeUnit.MILLISECONDS);
 
 
         host = new InetUtils(new InetUtilsProperties()).findFirstNonLoopbackHostInfo().getHostname();
@@ -85,10 +85,17 @@ public class UBRegistryCenter  implements RegistryCenter{
     }
 
     private void renew(){
-        String url =getRenewUrl();
-        log.debug("----> renew url {}", url);
-        InstanceMeta res = HttpUtils.httpPost( JSON.toJSONString(instanceMeta), url,InstanceMeta.class);
-        log.debug("renewed config server. res:{}" , res);
+        try{
+            String url =getRenewUrl();
+            log.debug("----> renew url {}", url);
+            Long res = HttpUtils.httpPost( JSON.toJSONString(instanceMeta), url,Long.class);
+            log.debug("renewed config server. res:{}" , res);
+        }
+        catch (Exception e)
+        {
+            log.error(e.getMessage());
+        }
+
     }
 
     private String getRegisterUrl()
