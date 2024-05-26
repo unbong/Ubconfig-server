@@ -1,6 +1,7 @@
 package io.unbong.ubconfig.server.model;
 
 import io.unbong.ubconfig.server.dal.LocksMapper;
+import io.unbong.ubconfig.server.regitry.RegistryCenter;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.Getter;
@@ -29,7 +30,13 @@ public class DistributedLocks {
 
     @Autowired
     DataSource dataSource;
+
+    @Autowired
+    RegistryCenter registryCenter;
+
     Connection connection;
+
+    private boolean isMasterInPrevious = false;
 
     @Getter
     private AtomicBoolean locked = new AtomicBoolean(false);
@@ -71,12 +78,22 @@ public class DistributedLocks {
 
     private void tryLock(){
         try {
-            lock();
+            boolean isMaster= lock();
+            if(! isMasterInPrevious  && isMaster)
+            {
+                registryCenter.register();
+            }
             locked.set(true);
+
+            isMasterInPrevious = true;
         }catch (Exception e){
             //e.printStackTrace();
             log.info("lock failed.");
             locked.set(false);
+            if(isMasterInPrevious ){
+                registryCenter.unregister();
+            }
+            isMasterInPrevious = false;
         }
     }
 
@@ -88,6 +105,8 @@ public class DistributedLocks {
                 connection.rollback();
                 connection.close();
             }
+
+            executor.shutdown();
         }catch (Exception e){
             log.info("ignore connection close failed.");
         }

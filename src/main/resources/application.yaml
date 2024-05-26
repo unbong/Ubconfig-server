@@ -23,6 +23,8 @@ spring:
 
 
 
+ubregistry:
+  servers: http://localhost:8484
 
 server:
   port: 9129
@@ -30,3 +32,7 @@ server:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    root: info
+    io.unbong: debug
